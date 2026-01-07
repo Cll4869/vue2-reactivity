@@ -1,0 +1,10 @@
+# 依赖文件夹
+node_modules/
+
+# 构建输出文件夹
+dist/
+
+# 以下文件应该被 Git 跟踪（不应被忽略）
+# README.md
+# .gitignore
+
