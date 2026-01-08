@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue2 响应式系统演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #a8d8ea 0%, #c8e6f5 50%, #b3d9f2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #64b5f6;
+        }
+        
+        .data-display {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .data-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-item label {
+            font-weight: bold;
+            color: #42a5f5;
+            min-width: 100px;
+            margin-right: 15px;
+        }
+        
+        .data-item .value {
+            flex: 1;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .input-group label {
+            font-weight: bold;
+            color: #42a5f5;
+            min-width: 100px;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #64b5f6;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #64b5f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #42a5f5;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Vue2 响应式系统演示</h1>
+            <p>修改下方输入框，观察数据变化和响应式更新</p>
+        </div>
+        
+        <div class="content">
+            <!-- 数据展示区域 -->
+            <div class="section">
+                <h2 class="section-title">📊 当前数据</h2>
+                <div class="data-display">
+                    <div class="data-item">
+                        <label>姓名:</label>
+                        <span class="value" id="name">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label>年龄:</label>
+                        <span class="value" id="age">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label>省份:</label>
+                        <span class="value" id="province">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label>城市:</label>
+                        <span class="value" id="city">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label>区域:</label>
+                        <span class="value" id="area">-</span>
+                    </div>
+                    <div class="data-item">
+                        <label>爱好:</label>
+                        <span class="value" id="hobby">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 数据编辑区域 -->
+            <div class="section">
+                <h2 class="section-title">✏️ 编辑数据</h2>
+                <div class="input-group">
+                    <label>姓名:</label>
+                    <input type="text" id="nameInput" placeholder="输入姓名">
+                </div>
+                <div class="input-group">
+                    <label>年龄:</label>
+                    <input type="number" id="ageInput" placeholder="输入年龄">
+                </div>
+                <div class="input-group">
+                    <label>省份:</label>
+                    <input type="text" id="provinceInput" placeholder="输入省份">
+                </div>
+                <div class="input-group">
+                    <label>城市:</label>
+                    <input type="text" id="cityInput" placeholder="输入城市">
+                </div>
+                <div class="input-group">
+                    <label>区域:</label>
+                    <input type="text" id="areaInput" placeholder="输入区域">
+                </div>
+                <div class="input-group">
+                    <label>添加爱好:</label>
+                    <input type="text" id="hobbyInput" placeholder="输入新爱好">
+                    <button class="btn" id="addHobbyBtn">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="./main.js"></script>
+</body>
+</html>
